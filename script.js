@@ -248,16 +248,63 @@ let wordList = [
     "your","yourself","youth","zero","zebra","zipper","zoo","zulu"
   ];
 
-  //Select a word to be guessed randomly
-  let i = Math.floor(Math.random() * wordList.length);
-  let wordToGuess = wordList[i];
-  console.log(wordToGuess);
+//Select a word to be guessed randomly
+let i = Math.floor(Math.random() * wordList.length);
+let wordToGuess = wordList[i];
+console.log(wordToGuess);
+  
+  
+
+//Style the input field id="word"
+let inputFieldWord = document.getElementById('word');
+inputFieldWord.style.height = "2rem";
+inputFieldWord.style.width = "50%";
+inputFieldWord.style.margin = "2rem";
+inputFieldWord.style.fontSize = "1.5rem"; 
+inputFieldWord.style.textAlign = "center";
+  
+
+let guesses = [];
+    for(let j=0; j < wordToGuess.length; j++){
+      guesses.push('x');
+    }
+    document.getElementById('word').placeholder = guesses;
+
+
+//If hint is clicked, show first letter
+function hint(){
+    let guessMin = [];
+    for(let k=0; k< guesses.length - 1; k++){
+    guessMin.push('x');
+    }
+    document.getElementById('word').placeholder = `${wordToGuess[0]}  ${guessMin}`;
+    
+}
+
+//style the input field id="try"
+let inputFieldTry = document.getElementById('try');
+inputFieldTry.style.height = "2rem";
+inputFieldTry.style.width = "10%";
+inputFieldTry.style.margin = "2rem";
+inputFieldTry.style.fontSize = "2rem"; 
+inputFieldTry.style.textAlign = "center";
+
 
   
+//storing the letters typed by the user
+let letters = document.getElementById('chars');
+letters.style.textAlign = "center";
+letters.style.fontSize = "1.2rem";
+
+inputFieldTry.addEventListener('change',function(){
+let typedLetter = document.getElementById('try').value;
+let wrong = [];
+    
+    
+})
   
-  //Create an array with the user's guesses
-  let guesses = [];
-  for(let j=0; j < wordToGuess.length; j++){
-      guesses.push('-');
-  }
-  prompt(guesses);
+  
+
+
+
+  

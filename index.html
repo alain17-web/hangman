@@ -8,8 +8,22 @@
 </head>
 <body>
     <h1>Hangman</h1>
-    <p id="toGuess"></p>
-
+    <!--<form action="#" method="post">-->
+        <button onclick="hint()">Do you want a hint ?</button>
+        <div id="hint">
+            <label for="word">Guess the word:</label>
+            <input type="text" id="word" placeholder="Guess the word:"/>
+        </div>
+        <form action="#" method='post'>
+            <div id="attempt">
+                <label for="try">Type a letter:</label>
+                <input type="text" name ="try" id="try" />
+            </div>
+        </form>
+        <button id="sure">You're sure ?</button>
+        <div id="letters">
+            <p id="chars">You have typed :</p>
+        </div>
 
     <script src="./script.js"></script>
 </body>
