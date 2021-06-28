@@ -248,63 +248,120 @@ let wordList = [
     "your","yourself","youth","zero","zebra","zipper","zoo","zulu"
   ];
 
+
 //Select a word to be guessed randomly
-let i = Math.floor(Math.random() * wordList.length);
-let wordToGuess = wordList[i];
-console.log(wordToGuess);
-  
-  
-
-//Style the input field id="word"
-let inputFieldWord = document.getElementById('word');
-inputFieldWord.style.height = "2rem";
-inputFieldWord.style.width = "50%";
-inputFieldWord.style.margin = "2rem";
-inputFieldWord.style.fontSize = "1.5rem"; 
-inputFieldWord.style.textAlign = "center";
-  
-
-let guesses = [];
-    for(let j=0; j < wordToGuess.length; j++){
-      guesses.push('x');
-    }
-    document.getElementById('word').placeholder = guesses;
-
-
-//If hint is clicked, show first letter
-function hint(){
-    let guessMin = [];
-    for(let k=0; k< guesses.length - 1; k++){
-    guessMin.push('x');
-    }
-    document.getElementById('word').placeholder = `${wordToGuess[0]}  ${guessMin}`;
-    
+let wordToGuess = '';
+function randomWord() {
+  wordToGuess = wordList[Math.floor(Math.random() * wordList.length)];
 }
 
-//style the input field id="try"
-let inputFieldTry = document.getElementById('try');
-inputFieldTry.style.height = "2rem";
-inputFieldTry.style.width = "10%";
-inputFieldTry.style.margin = "2rem";
-inputFieldTry.style.fontSize = "2rem"; 
-inputFieldTry.style.textAlign = "center";
+
+//Function that creates a keyboard to type in a letter
+function generateButtons() {
+  let buttonsHTML = 'abcdefghijklmnopqrstuvwxyz'.split('').map(letter =>
+    `
+      <button
+        class="btn btn-lg btn-primary m-2"
+        id='` + letter + `'
+        onClick="handleGuess('` + letter + `')"
+      >
+        ` + letter + `
+      </button>
+    `).join('');
+
+  document.getElementById('keyboard').innerHTML = buttonsHTML;
+}
 
 
-  
-//storing the letters typed by the user
-let letters = document.getElementById('chars');
-letters.style.textAlign = "center";
-letters.style.fontSize = "1.2rem";
 
-inputFieldTry.addEventListener('change',function(){
-let typedLetter = document.getElementById('try').value;
-let wrong = [];
+//Function that handles the guess
+let guessed = [];
+let livesLeft = 6;
+function handleGuess(typedLetter) {
+
+    //If letter not yet typed, push in array 
+  if(guessed.indexOf(typedLetter) === -1){ 
+      guessed.push(typedLetter); 
     
-    
-})
-  
-  
+    }
+    //if letter already typed, disable possibility to display a second time
+  document.getElementById(typedLetter).setAttribute('disabled', true);
 
+  //if letter is correct  - call functions guessedWord() & checkIfGameWon();
+  if (wordToGuess.indexOf(typedLetter) >= 0) {
+    guessedWord();
+    checkIfGameWon();
+
+    //else decrease lives & call function checkIfGameLost();
+  }else if (wordToGuess.indexOf(typedLetter) === -1) {
+    livesLeft--;
+    updateLives();
+    checkIfGameLost();
+    //updateHangmanPicture();
+  }
+}
+
+//function that displays either guessed letters or "_"
+let wordStatus = null;
+function guessedWord() {
+    wordStatus = wordToGuess.split('').map(letter => (guessed.indexOf(letter) >= 0 ? letter : " _ ")).join('');
+  
+    document.getElementById('word').innerHTML = wordStatus;
+  }
+
+/*function updateHangmanPicture() {
+  document.getElementById('hangmanPic').src = './images/' + livesLeft + '.jpg';
+}*/
+
+
+//function that verifies if the game is won
+function checkIfGameWon() {
+  if (wordStatus === wordToGuess) {
+    document.getElementById('keyboard').innerHTML = 'You Won!!!';
+  }
+}
+
+//function that verifies if there are no lives left
+function checkIfGameLost() {
+  if (livesLeft === 0) {
+    document.getElementById('word').innerHTML = 'The answer was: ' + wordToGuess;
+    let answer = document.getElementById('word');
+    answer.style.fontSize ="1.5rem";
+
+    let msg = document.getElementById('keyboard');
+    msg.style.color ="red";
+    msg.style.fontSize ="1.5rem";
+    msg.innerHTML = 'You Lost!!!';
+  }
+}
+
+//function that displays how many lives are left
+function updateLives() {
+    let livesEl = document.getElementById('lives');
+    livesEl.style.color="orange";
+    livesEl.style.fontSize ="1.2rem";
+  document.getElementById('lives').innerHTML = `${livesLeft} lives left out of `;
+}
+
+//function to reset
+let maxLives = 6;
+function reset() {
+  livesLeft = 6;
+  guessed = [];
+  //document.getElementById('hangmanPic').src = './images/0.jpg';
+
+  randomWord();
+  guessedWord();
+  updateLives();
+  generateButtons();
+}
+
+document.getElementById('maxLives').innerHTML = maxLives;
+
+randomWord();
+console.log(wordToGuess);
+generateButtons();
+guessedWord();
 
 
   
