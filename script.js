@@ -297,7 +297,7 @@ function handleGuess(typedLetter) {
     livesLeft--;
     updateLives();
     checkIfGameLost();
-    //updateHangmanPicture();
+    updatePicture();
   }
 }
 
@@ -305,18 +305,20 @@ function handleGuess(typedLetter) {
 let wordStatus = null;
 function guessedWord() {
     wordStatus = wordToGuess.split('').map(letter => (guessed.indexOf(letter) >= 0 ? letter : " _ ")).join('');
-  
     document.getElementById('word').innerHTML = wordStatus;
   }
 
-/*function updateHangmanPicture() {
-  document.getElementById('hangmanPic').src = './images/' + livesLeft + '.jpg';
-}*/
+function updatePicture() {
+  document.getElementById('pictures').src = './assets/img/' + livesLeft + '.jpg';
+}
 
 
 //function that verifies if the game is won
 function checkIfGameWon() {
   if (wordStatus === wordToGuess) {
+    let msgWin = document.getElementById('keyboard');
+    msgWin.style.color = "green";
+    msgWin.style.fontSize = "1.5rem";
     document.getElementById('keyboard').innerHTML = 'You Won!!!';
   }
 }
@@ -328,10 +330,10 @@ function checkIfGameLost() {
     let answer = document.getElementById('word');
     answer.style.fontSize ="1.5rem";
 
-    let msg = document.getElementById('keyboard');
-    msg.style.color ="red";
-    msg.style.fontSize ="1.5rem";
-    msg.innerHTML = 'You Lost!!!';
+    let msgLost = document.getElementById('keyboard');
+    msgLost.style.color ="red";
+    msgLost.style.fontSize ="1.5rem";
+    msgLost.innerHTML = 'You Lost!!!';
   }
 }
 
@@ -340,7 +342,7 @@ function updateLives() {
     let livesEl = document.getElementById('lives');
     livesEl.style.color="orange";
     livesEl.style.fontSize ="1.2rem";
-  document.getElementById('lives').innerHTML = `${livesLeft} lives left out of `;
+  document.getElementById('lives').innerHTML = `${livesLeft} lives left out of 6`;
 }
 
 //function to reset
@@ -348,7 +350,7 @@ let maxLives = 6;
 function reset() {
   livesLeft = 6;
   guessed = [];
-  //document.getElementById('hangmanPic').src = './images/0.jpg';
+  document.getElementById('pictures').src = './assets/img/' + livesLeft + '.jpg';
 
   randomWord();
   guessedWord();
@@ -360,6 +362,7 @@ document.getElementById('maxLives').innerHTML = maxLives;
 
 randomWord();
 console.log(wordToGuess);
+console.log(wordList.length);
 generateButtons();
 guessedWord();
 
