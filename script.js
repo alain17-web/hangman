@@ -342,12 +342,21 @@ function updateLives() {
     let livesEl = document.getElementById('lives');
     livesEl.style.color="orange";
     livesEl.style.fontSize ="1.2rem";
-  document.getElementById('lives').innerHTML = `${livesLeft} lives left out of 6`;
+  document.getElementById('lives').innerHTML = `${livesLeft} lives left out of `;
+}
+
+//function that shows a letter if btn "need a hint ?" is clicked
+function giveHint(){
+let clue = wordToGuess[Math.floor(Math.random() * wordToGuess.length)];
+let hintEl = document.getElementById('hint');
+hintEl.insertAdjacentHTML('afterend',`<p id="pEl">There is a ${clue} in the word</p>`);
+  
 }
 
 //function to reset
 let maxLives = 6;
 function reset() {
+  location.reload();
   livesLeft = 6;
   guessed = [];
   document.getElementById('pictures').src = './assets/img/' + livesLeft + '.jpg';
@@ -356,13 +365,16 @@ function reset() {
   guessedWord();
   updateLives();
   generateButtons();
+  
 }
 
 document.getElementById('maxLives').innerHTML = maxLives;
-
+document.getElementById('hint').addEventListener('click',function(){
+  giveHint();
+});
 randomWord();
 console.log(wordToGuess);
-console.log(wordList.length);
+
 generateButtons();
 guessedWord();
 
