@@ -277,6 +277,8 @@ function generateButtons() {
 //Function that handles the guess
 let guessed = [];
 let livesLeft = 6;
+let wrongLetters = [];
+
 function handleGuess(typedLetter) {
 
     //If letter not yet typed, push in array 
@@ -298,6 +300,11 @@ function handleGuess(typedLetter) {
     updateLives();
     checkIfGameLost();
     updatePicture();
+
+    //and store and display wrong letters
+    wrongLetters.push(typedLetter);
+    document.getElementById('errors').innerHTML = `Incorrect letters : ${wrongLetters},`;
+   
   }
 }
 
@@ -308,6 +315,7 @@ function guessedWord() {
     document.getElementById('word').innerHTML = wordStatus;
   }
 
+//function that changes the picture
 function updatePicture() {
   document.getElementById('pictures').src = './assets/img/' + livesLeft + '.jpg';
 }
@@ -353,6 +361,8 @@ hintEl.insertAdjacentHTML('afterend',`<p id="pEl">There is a ${clue} in the word
   
 }
 
+
+
 //function to reset
 let maxLives = 6;
 function reset() {
@@ -369,12 +379,15 @@ function reset() {
 }
 
 document.getElementById('maxLives').innerHTML = maxLives;
+
+//call function giveHint() onclick
 document.getElementById('hint').addEventListener('click',function(){
   giveHint();
 });
+
+
 randomWord();
 console.log(wordToGuess);
-
 generateButtons();
 guessedWord();
 
